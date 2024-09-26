@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+   body 
+   {
+      @apply bg-cyan-300
+   }
+ }
+
+
+
+
+@layer components 
+{
+   .btn_nav 
+   {
+      @apply  bg-orange-300 p-5 rounded-[15px] text-white font-extrabold w-[150px] hover:bg-purple-400 shadow-2xl text-center
+   }
+
+   .btn_nav_r 
+   {
+      @apply w-[50px] h-[50px] shadow-2xl bg-orange-300 rounded-[100%]  hover:bg-purple-400 
+   }
+}
