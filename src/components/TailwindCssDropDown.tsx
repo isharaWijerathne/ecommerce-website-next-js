@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link';
 import React from 'react'
 
 
@@ -35,14 +36,12 @@ const TailwindCssDropDown : React.FC<IDropDownButoon> = ({dropDownName,Textvalue
                     
                         <div id="dropdownHover" ref={dropDownDiv}  className={ `top-10  right-[-5px]  absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700  ${isBtnClicked ? ' ' : ' hidden '} `  }>
                             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
-                            <li>
-                                <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
-                            </li>
+                            
                             {
                                 Textvalues.map((value,index) =>
                                     {
                                         return  <li key={index}>
-                                                    <a href={links[index]} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"> {value} </a>
+                                                    <Link href={links[index]} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"> {value} </Link>
                                                 </li>
                                     })
                             }
