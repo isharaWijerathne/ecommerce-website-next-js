@@ -3,6 +3,7 @@ import Product from "@/models/Product"
 import ProductCatogory from "@/models/ProductCategory";
 import { connectDb } from "@/dbConfig/dbconfig";
 import StaticGenarator from "@/inc/staticGenerator";
+import mongoose from "mongoose";
 
 
 export async function POST(req : NextRequest){
@@ -42,10 +43,11 @@ export async function POST(req : NextRequest){
         }
 
         
+        
         //new product
         const _new_product = await Product.create({
             product_id : nextId,
-            product_cat_id : Object(product_cat.product_cat_id),
+            product_cat_id :   product_cat._id,
             header : header,
             brand_name : brand_name,
             img_location : imgs,

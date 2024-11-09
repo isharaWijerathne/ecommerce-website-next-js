@@ -7,7 +7,8 @@ const productSchema = new mongoose.Schema({
         unique: true
     },
     product_cat_id : {
-        type:String,
+        type:mongoose.Schema.Types.ObjectId,
+        ref : 'productCat',
         requierd :[true,"product_cat_id is required"]
     },
     header : {

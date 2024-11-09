@@ -14,12 +14,16 @@ function page() {
 
        <div className='flex   justify-center content-center mt-10'>   
             <div className='grid grid-cols-4 '>
-                <Cart />
-                <Cart />
-                <Cart />
-                <Cart />
-                <Cart />
-                <Cart />
+                <Cart 
+                is_discount_available={true}
+                 discount_presentage={6} 
+                 header='sample Hear'
+                 product_brand='produc band'
+                 start_cout={5}
+                 price={1250}
+                 imgURL='https://bata.lk/wp-content/uploads/2023/09/5-side.jpg'
+                 
+                 />
             </div>
        </div>
         

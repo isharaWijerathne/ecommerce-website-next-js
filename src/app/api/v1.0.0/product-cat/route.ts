@@ -50,3 +50,27 @@ export async function POST(req:NextRequest)
     
 }
 
+export async function GET(req:NextRequest){
+    try {
+        //connectDB
+        connectDb();
+
+        //get category from database
+        const cat_list = await ProductCatogory.find({},{product_cat : 1,_id:0 ,product_cat_id : 1});
+
+        
+        return NextResponse.json({
+            status : "success",
+            data : {
+                product_categories: cat_list
+            }
+        },{status : 200 })
+
+    } catch (error) {
+        return NextResponse.json({
+            status : "fail",
+            message : error.message
+        },{status : 404})
+    }
+}
+

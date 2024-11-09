@@ -7,8 +7,10 @@ const productOffersSchema = new mongoose.Schema({
         unique :[true ,"product_offer_id is requierd filed"]
     },
     product_id : {
-        type : String,
+        type : mongoose.Schema.Types.ObjectId,
         required : [true,"product_id is requierd filed"],
+        unique :[true ,"product_id is requierd filed"],
+        ref : "products"
     },
     header : {
         type : String,
@@ -16,6 +18,10 @@ const productOffersSchema = new mongoose.Schema({
     },
     body : {
         type : String
+    }
+    ,discount : {
+        type : Number,
+        default : 0
     },
     code : {
         type : String,

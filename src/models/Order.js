@@ -7,11 +7,13 @@ const orderSchema = new mongoose.Schema({
         unique : [true, "order_id is unique filed"]
     },
     user_id : {
-        type : String,
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "users",
         required :[true,"user_id is required filed"],
     },
     product_id : {
-        type : String,
+        type : mongoose.Schema.Types.ObjectId,
+        ref: "products",
         required :[true,"product_id is required filed"],
     },
     lable_price : {
