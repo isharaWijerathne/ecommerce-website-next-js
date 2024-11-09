@@ -13,8 +13,10 @@ export async function POST(req:NextRequest)
         const reqBody = await req.json();
         const {product_cat_name} = reqBody;
 
+        //get last created id fron db
         const lastcreatedProdctCat = await ProductCatogory.findOne().sort({_id:-1})
 
+        //genarate next id
         let nextId : string =""; 
 
        if(lastcreatedProdctCat == null){
@@ -39,10 +41,12 @@ export async function POST(req:NextRequest)
         },{status : 200})
 
     } catch (error :any) {
+        
         return NextResponse.json({
             status : "fail",
             message : error.message
-        },{status : 500})
+        },{status : 404})
     }
     
 }
+

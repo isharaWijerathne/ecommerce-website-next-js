@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
         type : String,
         required : [true ,"address is required"],
     },
+    password : {
+        type : String,
+        default : "xxx-xxx-xxx-xxx"
+    },
     token : {
         type : String,
         default : "xxx-xxx-xxx-xxx"

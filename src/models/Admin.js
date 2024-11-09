@@ -20,6 +20,11 @@ const adminSchema = new mongoose.Schema({
         required : [true ,"email is required"],
         unique :[true,"user_id is unique filed"]
     },
+    password : {
+        type : String,
+        required :[true,"password is requierd filed"],
+        default : "xxx-xxx-xxx-xxx"
+    },
     token : {
         type : String,
         default : "xxx-xxx-xxx-xxx"
