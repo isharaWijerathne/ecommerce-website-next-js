@@ -1,3 +1,4 @@
+import { time } from 'console';
 import React from 'react'
 
 
@@ -9,6 +10,7 @@ interface ICart {
     start_cout : number,
     price : number,
     imgURL : string,
+
 }
 
 function Cart({header,product_brand,is_discount_available,discount_presentage,start_cout,price,imgURL}:ICart) {

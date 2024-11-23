@@ -4,7 +4,7 @@
 
 
 @layer base {
-   body 
+   .body_main 
    {
       @apply bg-cyan-300
    }
@@ -23,5 +23,9 @@
    .btn_nav_r 
    {
       @apply w-[50px] h-[50px] shadow-2xl bg-orange-300 rounded-[100%]  hover:bg-purple-400 
+   }
+
+   .app_font {
+      font-family: "Quicksand", serif;
    }
 }

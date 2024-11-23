@@ -14,18 +14,71 @@ export async function GET(req : NextRequest){
 
         const product_cat_id = searchPatams.get("id") //id or value => "any"
         const price = searchPatams.get("price")
-
-        //search db
-        const _selected_product = await Product.find({
-            $and :[
-                { product_cat_id : { $eq : product_cat_id}},
-                { price : {$gte : price}}
-            ]
-        },{_id : 0, __v:0})
+        const page : number = Number(searchPatams.get("page")) - 1 || 0
 
 
+        //params -> any -> allProduct
         if(product_cat_id == "any"){
 
+            let perPage = 15;
+            //let page = 0; //page start form zero
+
+            //Product -> list
+            const _selected_product = await Product.aggregate([
+              {
+                $match:{
+                  price: { $lte: Number(price) }
+                }
+              },
+                {
+        
+                    $lookup: {
+                        from: 'productcats',
+                        localField: "product_cat_id",
+                        foreignField: "_id",
+                        as: "product_cat"
+                      }
+                },
+                {
+                  $skip: perPage * page,
+                },
+                
+                {
+                  $limit: perPage,
+                }
+              ]);
+              
+              console.log(_selected_product.length);
+              
+    
+
+              //Offers ->
+              const _offers = await ProductOffers.find({
+                $and: [
+                  { discount: { $gt: 0 } },
+                  { count: { $gt: 0 } }
+                ]
+              });
+
+
+              const send_result = _selected_product.map(prd =>{
+
+                    _offers.forEach(ofr =>{ 
+                       
+                        if(String(ofr.product_id) == String(prd._id)){
+                           
+                            prd.product_offers = ofr;
+                        }
+                      
+                    })
+
+                    return prd;
+              });
+              
+            return NextResponse.json({
+                status : "success",
+                data : send_result
+            })
 
         }
         else{
@@ -41,41 +94,78 @@ export async function GET(req : NextRequest){
                 },{status : 404})
             }
 
-            //findProductOffers
+            let perPage = 15;
+           // let page = 0; // Page starts from zero
+            
+            // Product -> list
+            const _selected_product = await Product.aggregate([
+              
+              {
+                $match: {
+                //   product_cat_id: _productCategory._id, 
+                //    price: { $gte: price }    
+                
+                    $and : [
+                        {product_cat_id: _productCategory._id },
+                        {price: { $lte: Number(price) }}
+                    ]
+                },
+              },
+             
+              {
+                $lookup: {
+                  from: 'productcats',            
+                  localField: 'product_cat_id',   
+                  foreignField: '_id',            
+                  as: 'product_cat',             
+                },
+              },
+              
+              {
+                $skip: perPage * page,
+              },
+              
+              {
+                $limit: perPage,
+              },
+            ]);
+            
 
-            const _offers = await ProductOffers.findOne({
-                $and :[
-                    { product_cat_id : { $eq :product_cat_id } },
-                    { count : { $gt : 0 }  }
+            //match Product Offers ->
+               const _offers = await ProductOffers.find({
+                $and: [
+                  { discount: { $gt: 0 } },
+                  { count: { $gt: 0 } }
                 ]
-            });
+              });
+            
+
+           
+            const sendObject  =  _selected_product.map( prd =>{
+
+                _offers.forEach(ofr =>{ 
+                   
+                    if(String(ofr.product_id) == String(prd._id)){
+                       
+                        prd.product_offers = ofr;
+                    }
+                  
+                })
+
+                return prd;
+            });  
 
 
-
-
-
-
-
-
-
-
-
-
-
+            return NextResponse.json({
+                status : "success",
+                data : sendObject
+            })
+    
 
         }
 
-
-        const product_count = _selected_product.length;
         
-        return NextResponse.json({
-            status : "success",
-            data : {
-                count :product_count, 
-               products : _selected_product
-            }
-        })
-
+        
     } catch (error) {
         return NextResponse.json({
             status : "fail",

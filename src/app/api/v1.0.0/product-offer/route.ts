@@ -45,7 +45,7 @@ export async function POST(req : NextRequest){
 
         const _created_product_offer = await ProductOffers.create({
             product_offer_id : nextID,
-            product_id : product_id,
+            product_id : _product._id,
             header :  header,
             body :  body,
             code : code,
