@@ -8,6 +8,7 @@ interface IFormPicsShow {
 const FormPicsShow = ({setuPics}:IFormPicsShow) =>{
 
     const [pics,setPics] = useState<string[]>([]);
+    const [picsForParent,setpicsForParent] = useState<string[]>([]);
 
 
     //input element
@@ -28,10 +29,13 @@ const FormPicsShow = ({setuPics}:IFormPicsShow) =>{
 
     //pic add to array function
     function picAdd(){
-       picInputEle.current.value != "" ? setPics([...pics,picInputEle.current.value]) : null
+       picInputEle.current.value != "" ? setPics([...pics,String(picInputEle.current.value)]) : null
 
        //clear form
        picInputEle.current.value = "";
+
+        pics.map((x =>{console.log(x);
+        }))
      
     }
 
@@ -39,6 +43,11 @@ const FormPicsShow = ({setuPics}:IFormPicsShow) =>{
     useEffect(() =>{
         setuPics(pics);
     },[pics])
+
+    useEffect(()=>{
+      console.log(picInputEle.current.value);
+      
+    },[pics]);
 
   return (
     <>
@@ -84,7 +93,7 @@ const FormPicsShow = ({setuPics}:IFormPicsShow) =>{
                         </div>
 
                         <div>
-                            <img className="w-56 h-auto" src={value} alt="..." />
+                            <img className="w-56 h-auto" src={String(value)} alt="..." />
                         </div>
 
                         <div className='flex justify-end'>

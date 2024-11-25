@@ -4,6 +4,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import FormPicsShow from './FormPicsShow'
 import { useProductCategory } from '@/store/ProductCategoryStore'
 import useCreateProduct from './useCreateProduct'
+import ProductCreateStatus from './EProductCreateStatus'
+import Alert from '@/components/Alert/Alert'
+import AlertStatus from '@/components/Alert/EAlertStatus'
+
+/// to create product developer used customer hook
+//but more  easy  with  reducer hook 
 
 const page  = () => {
 
@@ -36,7 +42,7 @@ const page  = () => {
 
 
   //create product hook
-  const {isUploadLoading,createProduct} = useCreateProduct(
+  const {isUploadLoading,createProduct,actionCompleteStatus,setActionCompleteStatus} = useCreateProduct(
     {
       productCatId : productCategory.current? productCategory.current.value : null,
       header : productHeader.current ? productHeader.current.value : null,
@@ -51,10 +57,46 @@ const page  = () => {
 
   
 
+    //For AltetValue
+    const [altertMsg,setAlertMsg] = useState<string>("init");
+    const [altetStatus,setAlertStatus] = useState<AlertStatus>(AlertStatus.HIDDEN)
+
+    //handel form after complete
+    useEffect(()=>{
+
+      if(actionCompleteStatus === ProductCreateStatus.SUCCES){
+        //clear form
+        productHeader.current.value = "";
+        brandName.current.value = "";
+        setuPics([]) //pic array
+        starts.current.checked = false ;
+        price.current.value = "";
+        availableCount.current.value = "";
+       
+        setAlertMsg("Product created successfuly")
+        setAlertStatus(AlertStatus.SUCCESS)
+        
+      }
+      
+      if(actionCompleteStatus === ProductCreateStatus.FAIL){
+        console.log("erro");
+        
+        setAlertMsg("Try again another request")
+        setAlertStatus(AlertStatus.FAIL)
+        
+
+        setActionCompleteStatus(ProductCreateStatus.DEFAULT)
+      }
+      
+      
+    },[actionCompleteStatus])
+  
+
   return (
     <>
         <AdminHeader />
 
+        <Alert messageInComing={altertMsg} statusInComing={altetStatus} />
         {/* form */}
         <div className='flex justify-center'>
           <div className='m-2 p-10 gap-4 rounded-xl grid grid-cols-2 bg-slate-100'>
@@ -266,7 +308,7 @@ const page  = () => {
 
                         {/* update btu */}
                         <button
-                             onClick={  () => { createProduct()}}     
+                             onClick={createProduct}     
                         type="button"
                         className="py-3 px-4 h-12 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-green-500 text-white hover:bg-green-600 focus:outline-none focus:bg-green-600 disabled:opacity-50 disabled:pointer-events-none"
                         >
